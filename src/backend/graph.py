@@ -1,40 +1,42 @@
+import heapq
+
 class Graph:
     def __init__(self):
-        self.nodes = set()  # Set of intersections (nodes)
-        self.edges = {}  # Dictionary for adjacency list: {node: [(neighbor, weight)]}
+        self.nodes = set()  # Intersections (nodes)
+        self.edges = {}  # Roads (edges) with weights
 
-    def add_node(self, node):
-        """Add a new intersection (node) to the graph."""
-        self.nodes.add(node)
-        self.edges[node] = []
+    def add_intersection(self, intersection):
+        """Add an intersection (node) to the graph."""
+        self.nodes.add(intersection)
+        if intersection not in self.edges:
+            self.edges[intersection] = []
 
-    def add_edge(self, from_node, to_node, weight):
-        """Add a road (edge) between two intersections."""
-        if from_node not in self.edges:
-            self.edges[from_node] = []
-        if to_node not in self.edges:
-            self.edges[to_node] = []
+    def add_road(self, from_intersection, to_intersection, weight):
+        """Add a road (edge) between two intersections with a specified weight."""
+        if from_intersection not in self.edges:
+            self.edges[from_intersection] = []
+        if to_intersection not in self.edges:
+            self.edges[to_intersection] = []
+        self.edges[from_intersection].append((to_intersection, weight))
 
-        self.edges[from_node].append((to_node, weight))
-        self.edges[to_node].append((from_node, weight))  # Undirected graph
-
-    def shortest_path(self, start, end):
-        """Calculate the shortest path using Dijkstra's algorithm."""
-        import heapq
-
-        # Priority queue to store (distance, node)
-        queue = [(0, start)]
+    def shortest_path(self, start, end, emergency=False):
+        """Calculate the shortest path using Dijkstra's algorithm, with consideration for emergency vehicles."""
+        queue = [(0, start)]  # Priority Queue (distance, node)
         distances = {node: float('inf') for node in self.nodes}
         distances[start] = 0
 
         while queue:
             current_distance, current_node = heapq.heappop(queue)
 
-            # Stop if we've reached the destination
+            # If the node is the destination, return the shortest distance
             if current_node == end:
                 return current_distance
 
+            # Explore neighbors (connected intersections)
             for neighbor, weight in self.edges[current_node]:
+                if emergency:
+                    weight = weight * 0.5  # Reduce weight by 50% for emergency vehicles (quicker route)
+                
                 distance = current_distance + weight
                 if distance < distances[neighbor]:
                     distances[neighbor] = distance
