@@ -85,11 +85,19 @@ Page {
                                 color: "#ffffff"
                             }
                             onClicked: {
-                                backend.add_vehicle(vehicleIntersectionInput.text, vehicleTypeInput.currentText)
-                                outputText.text = "Vehicle added: " + vehicleTypeInput.currentText + " at " + vehicleIntersectionInput.text
-                                vehicleIntersectionInput.text = ""
-                                vehicleTypeInput.currentIndex = -1
-                            }
+    // Check if the selected vehicle type is an emergency vehicle
+    var isEmergency = vehicleTypeInput.currentText === "Ambulance" || 
+                      vehicleTypeInput.currentText === "Police" || 
+                      vehicleTypeInput.currentText === "Fire Truck";
+    
+    // Call the backend to add the vehicle with the emergency flag
+    backend.add_vehicle(vehicleIntersectionInput.text, vehicleTypeInput.currentText, isEmergency)
+    
+    outputText.text = "Vehicle added: " + vehicleTypeInput.currentText + " at " + vehicleIntersectionInput.text
+    vehicleIntersectionInput.text = ""
+    vehicleTypeInput.currentIndex = -1
+}
+
                         }
                     }
                 }

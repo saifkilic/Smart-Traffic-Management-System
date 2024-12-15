@@ -11,8 +11,9 @@ class Backend(QObject):
     def __init__(self):
         super().__init__()
         self.graph = Graph()
-        self.vehicle_manager = VehicleManager()
-        self.traffic_lights = TrafficLightManager(self.vehicle_manager)
+        self.traffic_lights = TrafficLightManager(None)  # Placeholder for VehicleManager
+        self.vehicle_manager = VehicleManager(self.traffic_lights)
+        self.traffic_lights.vehicle_manager = self.vehicle_manager  # Link back to VehicleManager
 
     @Slot(str)
     def add_intersection(self, name):
@@ -22,16 +23,9 @@ class Backend(QObject):
     def add_road(self, from_intersection, to_intersection, weight):
         self.graph.add_road(from_intersection, to_intersection, weight)
 
-    @Slot(str, str, result=str)
-    def find_shortest_path(self, start, end):
-        distance = self.graph.shortest_path(start, end)
-        if distance == float('inf'):
-            return f"No path found between {start} and {end}"
-        return f"Shortest path from {start} to {end}: {distance}"
-
-    @Slot(str, str)
-    def add_vehicle(self, intersection, vehicle_type):
-        self.vehicle_manager.add_vehicle(intersection, vehicle_type)
+    @Slot(str, str, bool)
+    def add_vehicle(self, intersection, vehicle_type, is_emergency=False):
+        self.vehicle_manager.add_vehicle(intersection, vehicle_type, is_emergency)
 
     @Slot(str, result=str)
     def get_vehicles_at_intersection(self, intersection):
@@ -47,6 +41,10 @@ class Backend(QObject):
     @Slot(str, result=int)
     def get_traffic_light_duration(self, intersection):
         return self.traffic_lights.get_light_duration(intersection)
+
+    @Slot(str)
+    def reset_vehicle_count(self, intersection):
+        self.traffic_lights.reset_vehicle_count(intersection)
 
     @Slot(int)
     def set_traffic_refresh_rate(self, refresh_rate):
