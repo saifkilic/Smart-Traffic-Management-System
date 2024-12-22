@@ -39,6 +39,7 @@ class TrafficLightManager(QObject):
             emergency_bonus = 10 * emergency_count  # Extra time for emergencies
             self.light_durations[intersection] = min(120, base_duration + emergency_bonus)
 
+            # Logging traffic light updates
             logging.debug(
                 f"Updated: {intersection}, Vehicles: {vehicle_count}, Emergencies: {emergency_count}, Duration: {self.light_durations[intersection]}"
             )
@@ -59,6 +60,7 @@ class TrafficLightManager(QObject):
         if is_emergency:
             self.emergency_vehicle_count[intersection] += 1
 
+        # Logging vehicle count changes
         logging.debug(
             f"Incremented vehicle count at {intersection}: Total: {self.vehicle_counters[intersection]}, Emergencies: {self.emergency_vehicle_count[intersection]}"
         )

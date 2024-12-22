@@ -142,7 +142,7 @@ Page {
                             }
                         }
 
-                         Row {
+                        Row {
                             spacing: 15
 
                             TextField {
@@ -166,6 +166,7 @@ Page {
                                     radius: 5
                                 }
                             }
+                           
 
                             Button {
                                 text: "Find Shortest Path"
@@ -178,8 +179,7 @@ Page {
                                     color: "#ffffff"
                                 }
                                 onClicked: {
-                                    var result = backend.find_shortest_path(startIntersectionInput.text, endIntersectionInput.text)
-                                    shortestPathOutput.text = result
+                                     shortestPathOutput.text = backend.shortest_path(startIntersectionInput.text, endIntersectionInput.text)
                                 }
                             }
                         }
@@ -191,7 +191,6 @@ Page {
                             color: isDarkMode ? "#ffffff" : "#000000"
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
-                            visible: shortestPathOutput.text !== "Shortest path info will appear here"
                         }
                     }
                 }
@@ -246,25 +245,7 @@ Page {
                             color: isDarkMode ? "#ffffff" : "#000000"
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
-                            visible: lightOutputText.text !== "Traffic light info will appear here"
                         }
-                    }
-                }
-
-                // General Output Section
-                Rectangle {
-                    width: parent.width - 40
-                    height: 150
-                    color: isDarkMode ? "#2e2e2e" : "#f0f0f0"
-                    radius: 10
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    Text {
-                        id: outputText
-                        text: "Output will appear here"
-                        color: isDarkMode ? "#ffffff" : "#000000"
-                        wrapMode: Text.WordWrap
-                        anchors.centerIn: parent
                     }
                 }
             }

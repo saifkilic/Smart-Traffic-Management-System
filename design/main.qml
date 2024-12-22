@@ -1,70 +1,121 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 6.0
+import QtQuick.Controls 6.0
+import QtQuick.Layouts 1.15
 
 ApplicationWindow {
     visible: true
-    width: 800
-    height: 600
-    title: "Smart Traffic Management System"
+    width: 1280
+    height: 612
+    title: "Traffic Management System"
 
+    // Dark Mode Property
     property bool isDarkMode: true
-    color: isDarkMode ? "#1e1e1e" : "#ffffff"
 
-    // Dark Mode Toggle Button
-    Button {
-        text: isDarkMode ? "Light Mode" : "Dark Mode"
-        width: 120
-        height: 40
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.margins: 10
-        background: Rectangle {
-            color: isDarkMode ? "#FFA500" : "#444444"
-            radius: 10
-        }
-        onClicked: {
-            isDarkMode = !isDarkMode
-        }
-    }
-
-    StackView {
-        id: stackView
+    // Background Image for Dark and Light Mode
+    Rectangle {
         anchors.fill: parent
 
-        initialItem: Rectangle {
-            color: isDarkMode ? "#2e2e2e" : "#f0f0f0"
+        // Background Image
+        Image {
+            source: isDarkMode ? "darkmode.svg" : "lightmode.svg"  // Set correct image paths
             anchors.fill: parent
+            fillMode: Image.PreserveAspectCrop
+        }
 
-            Column {
-                spacing: 20
-                anchors.centerIn: parent
+        // StackView for navigation
+        StackView {
+            id: stackView
+            anchors.fill: parent
+            initialItem: homePage
 
-                Text {
-                    text: "Welcome to Smart Traffic Management System"
-                    font.pixelSize: 20
-                    color: isDarkMode ? "#ffffff" : "#000000"
-                }
+            // Home Page Component
+            Component {
+                id: homePage
+                Rectangle {
+                    width: 1280
+                    height: 612
+                    color: "transparent"  // Transparent background to show image
 
-                // Add Vehicle Button
-                Button {
-                    text: "Add Vehicle"
-                    width: 150
-                    height: 40
-                    onClicked: {
+                    // Dark Mode Toggle Button (Top Right)
+                    Button {
+                          height: 61
+    anchors.top: parent.top
+    anchors.right: parent.right
+    anchors.topMargin: 30
+    anchors.rightMargin: 25
+    background: Rectangle {
+        color: "transparent"
+        radius: width / 2  // Circle radius is half of the width
+        border.color: "transparent"  // No border during hover
+    }
+    // Disable hover effects
+    highlighted: false  // Disable internal hover state
+    hoverEnabled: false // Ensure no visual hover behavior
+ 
+                        onClicked: isDarkMode = !isDarkMode
+                    }
+
+                    // Button Section for Navigation
+                     ColumnLayout  {
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 20
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 20
+
+                        Rectangle {
+                            width: 320
+                            height: 65
+                            radius: 23
+                            color: "#60DD1D"  // Green background
+                            border.color: "transparent"
+
+                            Text {
+                                text: "Vehicle Manager"
+                                font.pixelSize: 18
+                                color: isDarkMode ? "black" : "white"
+                                anchors.centerIn: parent
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                               onClicked: {
                         stackView.push("VehiclePage.qml")
                     }
-                }
+                            }
+                        }
 
-                // Add Roads/Intersections Button
-                Button {
-                    text: "Add Roads/Intersections"
-                    width: 200
-                    height: 40
-                    onClicked: {
+                        Rectangle {
+                            width: 320
+                            height: 65
+                            radius: 23
+                            color: "#60DD1D"  // Blue background
+                            border.color: "transparent"
+
+                            Text {
+                                text: "Roads and Intersections"
+                                font.pixelSize: 18
+                                color: isDarkMode ? "black" : "white"
+                                anchors.centerIn: parent
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                 onClicked: {
                         stackView.push("RoadsAndIntersectionsPage.qml")
+                    }
+                            }
+                        }
                     }
                 }
             }
+
+           
+
+           
         }
     }
 }

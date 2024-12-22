@@ -5,7 +5,6 @@ Page {
     id: vehiclePage
     property bool isDarkMode: true
 
-    // Root rectangle to apply the color property
     Rectangle {
         anchors.fill: parent
         color: isDarkMode ? "#1e1e1e" : "#ffffff"
@@ -14,12 +13,12 @@ Page {
         Rectangle {
             width: 50
             height: 50
-            color: isDarkMode ? "#FFA500" : "#444444"
+            color: isDarkMode ? "#60DD1D" : "#444444"
             radius: 25
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: 20
-            z: 10 // Ensure it's on top of other components
+            z: 10
 
             MouseArea {
                 anchors.fill: parent
@@ -31,6 +30,8 @@ Page {
             Text {
                 text: "<"
                 anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 color: isDarkMode ? "#000000" : "#ffffff"
                 font.pixelSize: 24
             }
@@ -42,7 +43,7 @@ Page {
             spacing: 20
             padding: 20
 
-            // Input Section (Add Vehicle)
+            // Add Vehicle Section
             Rectangle {
                 width: parent.width - 40
                 height: 300
@@ -56,54 +57,75 @@ Page {
 
                     Row {
                         spacing: 15
-
                         TextField {
                             id: vehicleIntersectionInput
                             placeholderText: "Intersection Name"
-                            width: 200
-                            color: isDarkMode ? "#ffffff" : "#000000"
+                            width: 270
+                            height: 40
+                            font.pixelSize: 16
+                            color: isDarkMode ? "#60DD1D" : "#000000"
                             background: Rectangle {
                                 color: isDarkMode ? "#333333" : "#e0e0e0"
                                 radius: 5
                             }
                         }
 
+                       
                         ComboBox {
                             id: vehicleTypeInput
-                            width: 200
+                            width: 270
+                            height: 40
                             model: ["Select Vehicle Type", "Car", "Bus", "Bike", "Truck", "Ambulance", "Fire Truck", "Police"]
+                            font.pixelSize: 16
+                            background: Rectangle {
+                                color: isDarkMode ? "#333333" : "#e0e0e0"
+                                radius: 5
+                            }
+                            contentItem: Text {
+                                text: vehicleTypeInput.displayText
+                                color: isDarkMode ? "#ffffff" : "#000000"
+                                elide: Text.ElideRight
+                                font.pixelSize: 16
+                                anchors.verticalCenter: parent.verticalCenter
+                                horizontalAlignment: Text.AlignHCenter
+                            }
                         }
 
                         Button {
+                             width: 270
+                            height: 40
                             text: "Add Vehicle"
                             background: Rectangle {
-                                color: "#FFA500"
+                                color: "#60DD1D"
                                 radius: 5
                             }
                             contentItem: Text {
                                 text: "Add Vehicle"
-                                color: "#ffffff"
+                                color: "#000000"
+                                font.pixelSize: 16
+                                anchors.centerIn: parent
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                             }
                             onClicked: {
-    // Check if the selected vehicle type is an emergency vehicle
-    var isEmergency = vehicleTypeInput.currentText === "Ambulance" || 
-                      vehicleTypeInput.currentText === "Police" || 
-                      vehicleTypeInput.currentText === "Fire Truck";
-    
-    // Call the backend to add the vehicle with the emergency flag
-    backend.add_vehicle(vehicleIntersectionInput.text, vehicleTypeInput.currentText, isEmergency)
-    
-    outputText.text = "Vehicle added: " + vehicleTypeInput.currentText + " at " + vehicleIntersectionInput.text
-    vehicleIntersectionInput.text = ""
-    vehicleTypeInput.currentIndex = -1
-}
+                                // Check if the selected vehicle type is an emergency vehicle
+                                var isEmergency = vehicleTypeInput.currentText === "Ambulance" ||
+                                                  vehicleTypeInput.currentText === "Police" ||
+                                                  vehicleTypeInput.currentText === "Fire Truck";
 
+                                // Call the backend to add the vehicle with the emergency flag
+                                backend.add_vehicle(vehicleIntersectionInput.text, vehicleTypeInput.currentText, isEmergency)
+
+                                outputText.text = "Vehicle added: " + vehicleTypeInput.currentText + " at " + vehicleIntersectionInput.text
+                                vehicleIntersectionInput.text = ""
+                                vehicleTypeInput.currentIndex = -1
+                            }
                         }
                     }
                 }
             }
 
-            // Vehicle Checking Section
+            // Check Vehicles at Intersection Section
             Rectangle {
                 width: parent.width - 40
                 height: 300
@@ -115,15 +137,15 @@ Page {
                     spacing: 15
                     anchors.centerIn: parent
 
-                    // Check Vehicles at Intersection
                     Row {
                         spacing: 15
-
                         TextField {
-                            id: checkIntersectionInput
+                           id: checkIntersectionInput
                             placeholderText: "Intersection Name"
-                            width: 200
-                            color: isDarkMode ? "#ffffff" : "#000000"
+                            width: 270
+                            height: 40
+                            font.pixelSize: 16
+                             color: isDarkMode ? "#60DD1D" : "#000000"
                             background: Rectangle {
                                 color: isDarkMode ? "#333333" : "#e0e0e0"
                                 radius: 5
@@ -131,14 +153,20 @@ Page {
                         }
 
                         Button {
+                            width: 270
+                            height: 40
                             text: "Check Vehicles"
                             background: Rectangle {
-                                color: "#FFA500"
+                                color: "#60DD1D"
                                 radius: 5
                             }
                             contentItem: Text {
                                 text: "Check Vehicles"
-                                color: "#ffffff"
+                                color: "#000000"
+                                font.pixelSize: 16
+                                anchors.centerIn: parent
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                             }
                             onClicked: {
                                 if (checkIntersectionInput.text !== "") {
@@ -154,19 +182,25 @@ Page {
                         text: "Vehicles will appear here"
                         color: isDarkMode ? "#ffffff" : "#000000"
                         wrapMode: Text.WordWrap
+                        font.pixelSize: 16
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
-                    // Total Vehicles Section
                     Button {
+                        width: 270
+                            height: 40
                         text: "Check Total Vehicles"
                         background: Rectangle {
-                            color: "#FFA500"
+                            color: "#60DD1D"
                             radius: 5
                         }
                         contentItem: Text {
                             text: "Check Total Vehicles"
-                            color: "#ffffff"
+                            color: "#000000"
+                            font.pixelSize: 16
+                            anchors.centerIn: parent
+                            horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                         }
                         onClicked: {
                             var result = backend.get_total_vehicles()
@@ -195,6 +229,7 @@ Page {
                 Text {
                     id: outputText
                     text: "Output will appear here"
+                    font.pixelSize: 16
                     color: isDarkMode ? "#ffffff" : "#000000"
                     wrapMode: Text.WordWrap
                     anchors.centerIn: parent
