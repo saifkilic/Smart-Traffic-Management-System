@@ -53,34 +53,34 @@ python src/main.py
 ## Usage
 
 **Once the system is set up:**
--You can add intersections and roads via the UI.
--Shortest paths between intersections can be computed using Dijkstra's Algorithm.
--Traffic lights can be configured based on the intersection of choice.
--Vehicles can be added to the system and managed based on priority using Priority Queues.
--You can toggle between light mode and dark mode via the UI.
--Architecture
--Graph Representation
+- You can add intersections and roads via the UI.
+- Shortest paths between intersections can be computed using Dijkstra's Algorithm.
+- Traffic lights can be configured based on the intersection of choice.
+- Vehicles can be added to the system and managed based on priority using Priority Queues.
+- You can toggle between light mode and dark mode via the UI.
+- Architecture
+- Graph Representation
 
  ---
 ### **The system represents the road network as a graph:**
 
--Intersections are the nodes.
--Roads are edges with weights representing distance or time.
--The graph is dynamic, meaning that nodes (intersections) and edges (roads) can be added, removed, or modified in real time based on traffic updates.
+- Intersections are the nodes.
+- Roads are edges with weights representing distance or time.
+- The graph is dynamic, meaning that nodes (intersections) and edges (roads) can be added, removed, or modified in real time based on traffic updates.
 
 ### Backend Logic:
 The backend is written in Python, where the logic behind the traffic management system resides.
--**Graph Construction:** Uses adjacency lists to represent roads connecting intersections.
--**Shortest Path:** Dijkstra’s Algorithm is used for efficient pathfinding.
--The algorithm works with priority queues to process the graph efficiently.
--It calculates the shortest path by visiting neighboring nodes and evaluating their distance to find the shortest route.
--**Vehicle Priority Handling:** Emergency vehicles (police, ambulances) are prioritized using priority queues, ensuring they can traverse intersections with minimal delays.
+- **Graph Construction:** Uses adjacency lists to represent roads connecting intersections.
+- **Shortest Path:** Dijkstra’s Algorithm is used for efficient pathfinding.
+- The algorithm works with priority queues to process the graph efficiently.
+- It calculates the shortest path by visiting neighboring nodes and evaluating their distance to find the shortest route.
+- **Vehicle Priority Handling:** Emergency vehicles (police, ambulances) are prioritized using priority queues, ensuring they can traverse intersections with minimal delays.
 
 ### Frontend Design:
 The frontend is built using QtQuick/QML for a seamless user interface. The page structure includes:
--**Roads and Intersections Page:** For adding intersections, roads, and finding shortest paths.
--**Traffic Light Management:** For setting traffic light durations based on intersections.
--**Vehicle Priority Management:** A visual interface to manage vehicles in real-time, based on their priority.
+- **Roads and Intersections Page:** For adding intersections, roads, and finding shortest paths.
+- **Traffic Light Management:** For setting traffic light durations based on intersections.
+- **Vehicle Priority Management:** A visual interface to manage vehicles in real-time, based on their priority.
  
  ---
  
@@ -114,13 +114,13 @@ The graph representing the road network is constructed as an adjacency list. Eac
 ## Real-World Applicability
 This system simulates a real-world traffic management solution:
 
--Urban Traffic Optimization: Ideal for modeling city traffic and testing route optimizations in smart city contexts.
--Emergency Vehicle Prioritization: Ensures that emergency vehicles can travel faster through the city using the vehicle priority queue.
--Route Optimization for Ride Services: Improves routes for ride-sharing and delivery services by optimizing traffic flow and minimizing travel time.
+- Urban Traffic Optimization: Ideal for modeling city traffic and testing route optimizations in smart city contexts.
+- Emergency Vehicle Prioritization: Ensures that emergency vehicles can travel faster through the city using the vehicle priority queue.
+- Route Optimization for Ride Services: Improves routes for ride-sharing and delivery services by optimizing traffic flow and minimizing travel time.
 Future Enhancements
--Integration with Real-Time Traffic Data: Utilize data feeds from sensors or GPS systems to dynamically adjust traffic light timings and vehicle routing.
-=Adaptive Traffic Control: Implement algorithms that dynamically control traffic lights based on traffic volume at different times of day.
-=Simulate Road Closures and Accidents: Simulate disruptions (accidents, construction zones) to demonstrate how the system adapts and reroutes traffic.
+- Integration with Real-Time Traffic Data: Utilize data feeds from sensors or GPS systems to dynamically adjust traffic light timings and vehicle routing.
+- Adaptive Traffic Control: Implement algorithms that dynamically control traffic lights based on traffic volume at different times of day.
+- Simulate Road Closures and Accidents: Simulate disruptions (accidents, construction zones) to demonstrate how the system adapts and reroutes traffic.
 
 ---
 
