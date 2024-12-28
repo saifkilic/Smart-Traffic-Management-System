@@ -23,11 +23,11 @@ The interface allows users to switch between dark and light modes.
 ## Installation
 To set up the Smart Traffic Management System locally, follow these steps:
 
-Requirements
-Python 3.x
-PyQt5/6
-QtQuick 2.15 (QML)
-DSA-related dependencies (e.g., queue, graph-related algorithms)
+-Requirements/
+-Python 3.x/
+-PyQt5/6/
+-QtQuick 2.15 (QML)/
+-DSA-related dependencies (e.g., queue, graph-related algorithms)
 
 ### Steps:
 **Clone the repository:**
