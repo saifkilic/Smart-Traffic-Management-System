@@ -16,21 +16,9 @@ Dynamic traffic light durations to control vehicle flow efficiently.
 Vehicles, including emergency vehicles, are managed based on priority using a priority queue.
 ### Dark Mode and Light Mode Toggle:
 The interface allows users to switch between dark and light modes.
----
-
-## Table of Contents
--Installation
--Usage
--Architecture
--DSA Concepts
--Graph Representation
--Backend Logic
--Frontend Design
--Real-World Applicability
--Future Enhancements
--License
 
 ---
+
 
 ## Installation
 To set up the Smart Traffic Management System locally, follow these steps:
