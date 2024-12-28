@@ -19,16 +19,16 @@ The interface allows users to switch between dark and light modes.
 ---
 
 ## Table of Contents
-Installation
-Usage
-Architecture
-DSA Concepts
-Graph Representation
-Backend Logic
-Frontend Design
-Real-World Applicability
-Future Enhancements
-License
+-Installation
+-Usage
+-Architecture
+-DSA Concepts
+-Graph Representation
+-Backend Logic
+-Frontend Design
+-Real-World Applicability
+-Future Enhancements
+-License
 
 ---
 
