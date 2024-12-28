@@ -1,6 +1,9 @@
 # Smart Traffic Management System
+
 ## Overview
+
 The **Smart Traffic Management System** is designed to optimize traffic flow and ensure efficient management of roads and intersections within a city. It simulates the operation of a road network, where each intersection is modeled as a node in a graph, and each road between intersections as edges in the graph. The system uses Dijkstra's Shortest Path Algorithm and Priority Queues to manage vehicles and optimize traffic flow.
+
 ---
 ## Features
 ### Graph Construction & Representation: 
