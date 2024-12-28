@@ -50,6 +50,10 @@ class Backend(QObject):
             return f"No vehicles at intersection {intersection}"
         return f"Vehicles at intersection {intersection}: {', '.join(vehicles)}"
 
+    @Slot(str, str, bool)
+    def add_vehicle(self, intersection, vehicle_type, is_emergency=False):
+        self.vehicle_manager.add_vehicle(intersection, vehicle_type, is_emergency)
+
     @Slot(result=int)
     def get_total_vehicles(self):
         """Get the total number of vehicles across all intersections."""

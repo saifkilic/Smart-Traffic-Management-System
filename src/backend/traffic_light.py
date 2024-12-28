@@ -1,10 +1,9 @@
-import heapq
-from collections import defaultdict
 from PySide6.QtCore import QObject, QTimer, Slot, Signal
 import logging
+from collections import defaultdict
+import heapq
 
 logging.basicConfig(level=logging.DEBUG)
-
 
 class TrafficLightManager(QObject):
     # Signal to communicate updates
@@ -19,6 +18,9 @@ class TrafficLightManager(QObject):
         self.light_durations = defaultdict(lambda: 10)  # Default duration is 10 seconds
         self.emergency_vehicle_count = defaultdict(int)  # Emergency vehicle counters
         self.light_queue = []  # Priority queue for intersections
+
+        # Timers for each intersection
+        self.intersection_timers = {}  # {intersection: QTimer}
 
         # Timer for updating traffic lights
         self.timer = QTimer()
@@ -84,11 +86,35 @@ class TrafficLightManager(QObject):
     @Slot(str, result=int)
     def get_light_duration(self, intersection):
         """Get the current traffic light duration for an intersection."""
-        return self.light_durations.get(intersection, 10)
+        duration = self.light_durations.get(intersection, 10)
+        self.start_removal_timer(intersection, duration)
+        return duration
 
-    @Slot(int)
-    def set_refresh_rate(self, refresh_rate):
-        """Set the frequency for updating traffic light durations."""
-        self.refresh_rate = refresh_rate
-        self.timer.setInterval(refresh_rate)
-        logging.debug(f"Refresh rate set to: {refresh_rate}ms")
+    def start_removal_timer(self, intersection, duration):
+        """
+        Start a timer to remove vehicles from the intersection after the light duration.
+        :param intersection: The intersection to clear.
+        :param duration: The duration of the traffic light.
+        """
+        if intersection in self.intersection_timers:
+            self.intersection_timers[intersection].stop()  # Stop any existing timer
+
+        timer = QTimer()
+        timer.setSingleShot(True)  # Timer triggers only once
+        timer.timeout.connect(lambda: self.clear_vehicles(intersection))
+        timer.start(duration * 1000)  # Duration in milliseconds
+        self.intersection_timers[intersection] = timer
+
+        logging.debug(f"Started timer for {intersection} to clear vehicles in {duration} seconds.")
+
+    def clear_vehicles(self, intersection):
+        """
+        Remove all vehicles from the specified intersection.
+        :param intersection: The intersection to clear.
+        """
+        self.vehicle_counters[intersection] = 0
+        self.emergency_vehicle_count[intersection] = 0
+        self.vehicle_manager.vehicle_data[intersection] = []
+
+        logging.debug(f"Cleared all vehicles at {intersection} after light duration.")
+        self.vehicle_count_updated.emit(intersection, 0)

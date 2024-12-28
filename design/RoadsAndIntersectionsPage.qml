@@ -10,14 +10,15 @@ Page {
 
         Rectangle {
             width: parent.width
-            color: isDarkMode ? "#1e1e1e" : "#ffffff"
+            height: contentHeight
+            color: isDarkMode ? "#000000" : "#ffffff"
 
             // Back Button
             Rectangle {
-                width: 50
-                height: 50
-                color: isDarkMode ? "#FFA500" : "#444444"
-                radius: 25
+                width: 80
+                height: 30
+                color: isDarkMode ? "#ffffff" : "#000000"
+                radius: 8
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 20
@@ -38,65 +39,108 @@ Page {
                 }
             }
 
+            // Dark Mode Toggle Button
+    Button {
+        text: isDarkMode ? "Light Mode" : "Dark Mode"
+        width: 90
+        height:35
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.margins: 10
+        z:2
+        background: Rectangle {
+            color: isDarkMode ? "#ffffff" : "#000000"
+            radius: 10
+        }
+        contentItem: Text {
+                        text: isDarkMode ? "Light Mode" : "Dark Mode"
+                        color: isDarkMode ? "#000000" : "#ffffff"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                       font.bold: true 
+                       font.pixelSize: 14
+                    }
+        onClicked: {
+            isDarkMode = !isDarkMode
+        }
+    }
+
             // Main Layout
             Column {
                 anchors.fill: parent
-                spacing: 20
-                padding: 20
+                spacing: 0
+                padding: 0
 
                 // Input Section: Add Intersection
                 Rectangle {
-                    width: parent.width - 40
+                    width: parent.width
                     height: 300
-                    color: isDarkMode ? "#2e2e2e" : "#f0f0f0"
-                    radius: 10
+                    color: isDarkMode ? "#000000" : "#ffffff"
+                    radius: 1
                     anchors.horizontalCenter: parent.horizontalCenter
+ Text {
+                            id: errorMessage
+                            text: "" // Initially empty
+                            color: "#ff0000"
+                            font.pixelSize: 14
+                            visible: text !== "" // Show only if text is not empty
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
 
                     Column {
                         spacing: 15
                         anchors.centerIn: parent
 
-                        // Intersection input
                         Row {
-                            spacing: 15
+                            spacing: 10
                             TextField {
                                 id: intersectionNameInput
                                 placeholderText: "Enter Intersection Name"
-                                width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 470
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
 
                             Button {
                                 text: "Add Intersection"
+                                width: 150
+                                height: 30
                                 background: Rectangle {
-                                    color: "#FFA500"
+                                    color: "#00ff00"
                                     radius: 5
                                 }
                                 contentItem: Text {
                                     text: "Add Intersection"
-                                    color: "#ffffff"
+                                    color: "#000000"
+                                    font.bold:true
                                 }
                                 onClicked: {
-                                    backend.add_intersection(intersectionNameInput.text)
-                                    intersectionNameInput.text = ""
+                                    if (intersectionNameInput.text === "") {
+                                        errorMessage.text = "Intersection name cannot be empty."
+                                    } else {
+                                        backend.add_intersection(intersectionNameInput.text)
+                                        intersectionNameInput.text = ""
+                                        errorMessage.text = "" // Clear the error if successful
+                                    }
                                 }
                             }
                         }
 
                         // Add Road Section
                         Row {
-                            spacing: 15
+                            spacing: 10
                             TextField {
                                 id: fromIntersectionInput
                                 placeholderText: "From Intersection"
-                                width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 150
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
@@ -104,10 +148,11 @@ Page {
                             TextField {
                                 id: toIntersectionInput
                                 placeholderText: "To Intersection"
-                                width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 150
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                   color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
@@ -115,43 +160,52 @@ Page {
                             TextField {
                                 id: roadWeightInput
                                 placeholderText: "Road Distance"
-                                width: 100
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 150
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
 
                             Button {
                                 text: "Add Road"
+                                width: 150
+                                height: 30
                                 background: Rectangle {
-                                    color: "#FFA500"
+                                    color: "#00ff00"
                                     radius: 5
                                 }
                                 contentItem: Text {
                                     text: "Add Road"
-                                    color: "#ffffff"
+                                    color: "#000000"
+                                    font.bold:true
                                 }
                                 onClicked: {
-                                    backend.add_road(fromIntersectionInput.text, toIntersectionInput.text, parseInt(roadWeightInput.text))
-                                    fromIntersectionInput.text = ""
-                                    toIntersectionInput.text = ""
-                                    roadWeightInput.text = ""
+                                     if (fromIntersectionInput.text === "" || toIntersectionInput.text === "" || roadWeightInput.text === "") {
+                                        errorMessage.text = "Please fill all fields to add a road."
+                                    } else {
+                                        backend.add_road(fromIntersectionInput.text, toIntersectionInput.text, parseInt(roadWeightInput.text))
+                                        fromIntersectionInput.text = ""
+                                        toIntersectionInput.text = ""
+                                        roadWeightInput.text = ""
+                                        errorMessage.text = "" // Clear the error if successful
+                                    }
                                 }
                             }
                         }
 
                         Row {
-                            spacing: 15
-
+                            spacing: 10
                             TextField {
                                 id: startIntersectionInput
                                 placeholderText: "Start Intersection"
-                                width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 230
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
@@ -159,27 +213,30 @@ Page {
                             TextField {
                                 id: endIntersectionInput
                                 placeholderText: "End Intersection"
-                                width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                width: 230
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#ffffff" : "#000000"
                                     radius: 5
                                 }
                             }
-                           
 
                             Button {
                                 text: "Find Shortest Path"
+                                width: 150
+                                height: 30
                                 background: Rectangle {
-                                    color: "#FFA500"
+                                    color: "#00ff00"
                                     radius: 5
                                 }
                                 contentItem: Text {
                                     text: "Find Shortest Path"
-                                    color: "#ffffff"
+                                    color: "#000000"
+                                    font.bold:true
                                 }
                                 onClicked: {
-                                     shortestPathOutput.text = backend.shortest_path(startIntersectionInput.text, endIntersectionInput.text)
+                                    shortestPathOutput.text = backend.shortest_path(startIntersectionInput.text, endIntersectionInput.text)
                                 }
                             }
                         }
@@ -197,10 +254,10 @@ Page {
 
                 // Traffic Light Section
                 Rectangle {
-                    width: parent.width - 40
-                    height: 200
-                    color: isDarkMode ? "#2e2e2e" : "#f0f0f0"
-                    radius: 10
+                    width: parent.width
+                    height: 350
+                    color: isDarkMode ? "#ffffff" : "#000000"
+                    radius: 1
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Column {
@@ -208,33 +265,40 @@ Page {
                         anchors.centerIn: parent
 
                         Row {
-                            spacing: 15
-
+                            spacing: 10
                             TextField {
                                 id: trafficLightIntersection
                                 placeholderText: "Enter Intersection Name"
                                 width: 200
-                                color: isDarkMode ? "#ffffff" : "#000000"
+                                height: 30
+                                placeholderTextColor: isDarkMode ? "#878787" : "#888888"
                                 background: Rectangle {
-                                    color: isDarkMode ? "#333333" : "#e0e0e0"
+                                    color: isDarkMode ? "#000000" : "#ffffff"
                                     radius: 5
                                 }
                             }
 
                             Button {
                                 text: "Get Light Duration"
+                                width: 180
+                                height: 30
                                 background: Rectangle {
-                                    color: "#FFA500"
+                                    color: "#00ff00"
                                     radius: 5
                                 }
                                 contentItem: Text {
                                     text: "Get Light Duration"
-                                    color: "#ffffff"
+                                    color:  isDarkMode ? "#000000" : "#ffffff"
+                                    font.bold:true
                                 }
-                                onClicked: {
-                                    var duration = backend.get_traffic_light_duration(trafficLightIntersection.text)
-                                    lightOutputText.text = "Light Duration at " + trafficLightIntersection.text + ": " + duration + " seconds"
-                                }
+                                onClicked: { if (trafficLightIntersection.text === "") {
+                lightOutputText.text = "Error: Intersection name cannot be empty."
+                lightOutputText.color = "#ff0000" // Display error in red
+            } else {
+                var duration = backend.get_traffic_light_duration(trafficLightIntersection.text)
+                lightOutputText.text = "Light Duration at " + trafficLightIntersection.text + ": " + duration + " seconds"
+                lightOutputText.color = isDarkMode ? "#ffffff" : "#000000" // Reset to normal color
+            }}
                             }
                         }
 
@@ -242,7 +306,7 @@ Page {
                             id: lightOutputText
                             text: "Traffic light info will appear here"
                             font.pixelSize: 16
-                            color: isDarkMode ? "#ffffff" : "#000000"
+                            color: isDarkMode ? "#000000" : "#ffffff"
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
                         }
